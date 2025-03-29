@@ -1,0 +1,1806 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> 
+  
+  <title>AY</title>
+    <style>
+      
+       html {
+            zoom: 1.36;
+            width: 300px;
+            height: 250px;
+        }
+
+        body {
+            width: 300px;
+            height: 250px;
+            margin: 0;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            -webkit-user-select: none; /* 禁止复制粘贴 */
+            -moz-user-select: none;    /* 禁止复制粘贴 */
+            -ms-user-select: none;     /* 禁止复制粘贴 */
+            user-select: none;         /* 禁止复制粘贴 */
+        }
+      
+
+
+        * {
+            color: #25941b;
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: #e6e6e6;
+        }
+      
+ input,
+button {
+font-size: 7px;
+height: 30px;
+border-radius: 6px;
+outline: none;
+transition: background-color 0.3s ease; 
+}
+
+input {
+background-color: #eee;
+}
+
+button {
+background-color: #ffffff;
+cursor: pointer;
+text-align: center;
+border: none;
+}
+
+button:hover {
+background-color: rgba(46, 187, 17, 0.5);
+}
+
+button:active {
+    transform: translateY(2px);
+}
+      
+.menubox {
+width: 100%;
+height: 30px;
+line-height: 30px;
+text-align: center;
+margin-bottom: 5px;
+}
+      
+.menubox.current {
+background-color: #e27d0a;
+border-radius: 5px;
+}
+
+.menuview {
+display: none;
+}
+
+        .menuview.current {
+            display: block;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .dropdown-content {
+            display: none;
+        }
+
+        .menu-style {
+          width:90%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 5px;
+            padding: 5px;
+        }
+
+        img {
+            width: 70px;
+            height: 70px;
+            border-radius: 100%;
+            display: block;
+            margin: 10px auto;
+        }
+      
+             #titleBar {
+            font-size: 18px;
+            background: linear-gradient(to right, cyan, black);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: bold; 
+            padding: 5px; /* 可选：增加内边距 */
+            animation: gradientAnimation 3s infinite;
+            background-size: 20% 10%;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 0%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+      
+
+
+               #ti {
+            font-size: 12px; 
+            background: linear-gradient(to right, cyan, black);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            padding: 5px; /* 可选：增加内边距 */
+            animation: gradientAnimation 3s infinite;
+            background-size: 200% 100%;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 0%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+      
+      
+    
+
+ 
+         .content-container {
+                   width: 60%; 
+            flex: 1;
+            background-color: #fcfcfc;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 4px transparent;
+            margin-left: 10px;
+            overflow-y: auto; /* 启用垂直滚动条 */
+      
+            max-height: 190px; /* 设置一个最大高度，根据需要调整 */
+        }
+
+        /* 可选：自定义滚动条样式 */
+        .content-container::-webkit-scrollbar {
+            width: 1px; /* 滚动条宽度 */
+        }
+        .content-container::-webkit-scrollbar-thumb {
+            background-color: transparent; /* 滚动条颜色 */
+            border-radius: 10px; /* 滚动条圆角 */
+        }
+        .content-container::-webkit-scrollbar-track {
+            background-color: transparent; /* 滚动条轨道颜色 */
+        }
+      
+      #bodyView {
+            background-color: #ffff;
+        border-radius: 10px;
+            flex: 1;
+            display: flex;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+      
+      .dropdown-content {
+    display: none; 
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 10px;
+   
+}
+      
+         .con {
+            text-align: center; 
+        }
+      
+ 
+   
+  
+ /*_______________________________滑条UI_________________*/ 
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 160px;
+            height: 8px;
+            background: #e4e4e4; 
+            border-radius: 6px; 
+            outline: none;
+            opacity: 0.8;
+            transition: background 0.5s ease, opacity 0.5s ease; 
+        }
+        .custom-slider:hover {
+            opacity: 1;
+            background: #c0c0c0; 
+        }
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px; 
+            height: 22px; 
+            background: #0079d7; 
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.35); 
+        }
+        .custom-slider::-webkit-slider-thumb:hover {
+            background: #005a9e; 
+            transform: scale(1.2); 
+        }
+        .custom-slider::-moz-range-thumb {
+            width: 22px; 
+            height: 22px; 
+            background: #0079d7; 
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.35);             transition: background 0.5s ease, transform 0.2s ease; 
+        }
+        .custom-slider::-moz-range-thumb:hover {
+            background: #005a9e; 
+            transform: scale(1.2); 
+        }
+         .slider-cont {
+            margin: 6px;
+            text-align: center;
+        }
+  
+.content-container, #bodyView {
+    transition: background-color 0.9s ease;
+}
+   .color-toggle {
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .color-toggle img {
+            width: 60px; 
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,.43);
+        }
+        .color-toggle img.active {
+            opacity: 0.9;
+            transform: scale(1.1);
+ 
+      }
+      
+  
+      
+  </style>
+
+   
+<body>
+    <span class="zx"></span>
+    <div class="con">
+        <div id="titleBar">冷酷灵魂自用版</div>
+    </div>
+    <div id="bodyView">    
+        <div class="menu-container">
+            <div class="content-container">
+                <div class="menu-style menubox" menu="menu1">作者</div>
+            <div class="menu-style menubox" menu="menu2">组装</div>
+            <div class="menu-style menubox" menu="menu3">背包</div>
+            <div class="menu-style menubox" menu="menu4">箱子</div>
+            <div class="menu-style menubox" menu="menu5">恐狼</div>
+            <div class="menu-style menubox" menu="menu15">猫咪</div>
+            <div class="menu-style menubox" menu="menu6">武器</div>
+            <div class="menu-style menubox" menu="menu7">装备</div>
+            <div class="menu-style menubox" menu="menu8">图纸</div>
+            <div class="menu-style menubox" menu="menu9">食物</div>
+            <div class="menu-style menubox" menu="menu10">药水</div>
+            <div class="menu-style menubox" menu="menu11">技能</div>
+            <div class="menu-style menubox" menu="menu12">卷轴</div>
+            <div class="menu-style menubox" menu="menu13">家具</div>
+            <div class="menu-style menubox" menu="menu14">印章</div>
+            <div class="menu-style menubox" menu="menu16">地图</div>
+            <div class="menu-style menubox" menu="menu17">圣诞</div>
+            <div class="menu-style menubox" menu="menu18">钥匙</div>
+            <div class="menu-style menubox" menu="menu19">脸谱</div>
+            <div class="menu-style menubox" menu="menu20">杂项</div>
+            </div>
+        </div>
+        <div class="content-container">
+  <div class="content-container">
+              <div id="menu1" class="menuview current">
+              <div class="color-toggle">
+        <img id="colorToggle" src="static/picture/1111.jpg" alt="">
+    </div>                                   
+                <div class="con">
+                    <button id="toggleButton" style="background-color: #f4f4f4; width: 100%;">联系六哥</button>
+                    <div id="dropdown" class="dropdown-content">
+                        <div id="ti">   微信:Earvll</div>
+      </div>                  
+       </div>
+        </div>
+          </div> 
+  
+<div id="menu2" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="Ksp(this)">1先点我</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="gengxinwupin(this)">2再点我</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="wood">原松木</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="stone">石灰岩</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="board">松木板</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="birch_wood">原桦木</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="birch_board">桦木板</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="stone_block">石块</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="beech_wood">山榉木材</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rope">绳子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cloth">布料</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cloth_thick">厚布</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="candle">蜡烛</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="wire">线</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="incense">香</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soulshard">灵魂碎片</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spirit_empty">小空瓶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="copper_debris">碎铜片</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="iron_debris">碎铁片</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="nails">青铜钉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="copper_ingot">铜锭</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="iron_ingot">铁锭</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bronze_ingot">青铜锭</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="steel_ingot">钢锭</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="straps">皮条</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chain">锁链</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spirit">烈酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mech">机械装置</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_hourglass">沙漏</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_fibula">搭扣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_skull">骷髅头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_lock">锁头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_goblet">圣餐杯</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="lattice">炉架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="saddle">马鞍</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="horse_bridle">笼头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="horse_feeder">饲料槽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pet_collar">脖套</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="training_mannequin">训练人偶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="holy_writ">命运之书</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bell">祷告铃</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scratching_post">猫抓板</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cushion">猫咪枕头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="handle">手柄</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="grinding_wheel">砂轮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="waggon_wheel">轮子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="waggon_bow">轴弓</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="waggon_barrel">宽敞桶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="waggon_harness">痕迹</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="waggon_axle">大车轴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="leather">皮革</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="wood_magic">魔法木材</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="iron_magic">魔法铁锭</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="leather_magic">魔法皮革</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pilers">钳子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bracelet">尖刺手镯</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="clip">夹钳</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="altar_left">祭坛左板</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="altar_right">祭坛右板</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="altar_mid">祭坛核心</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="betrayer_blood">叛徒之血</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="nameless_writ">死者之书</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scales">秤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pestle">研钵研杵</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="retort">曲颈瓶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ph_stone">贤者之石</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="heretics_fork">异端叉子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tools_rack">工具包</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="knee_crusher">碎膝器</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mask_iron">泼妇笼头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="iron_shaft">铁磨具</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bellows">风箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="gutter">浇铸通道</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="vat">熔炼锅</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mold">模具</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ticks">防热钢钳</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tempered_rivet">硬化铆钉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="acid">酸液</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="awl">锥子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="waxed_thread">蜡线</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="anvil">铁砧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chisel">凿子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ancient_plate">古老薄板</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="vise">夹具</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mallet">槌子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="needle_set">缝衣套装</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="staple">U形钉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="globe">地球仪</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="parchment">干羊皮纸</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spyglass">望远镜</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="compass">指南针</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sextant">六分仪</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="iron_ore">铁矿石</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sulfur">硫磺</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tin_ore">锡</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="fake_berry">浆果</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="saltpetre">硝酸钾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bowstring">弓弦</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pelt">动物毛皮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bone_powder">骨粉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="true_silver">纯银</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_ring">戒指</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_comb">梳子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_mirror">镜子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_spoon">匙子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_tusk">恐狼牙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="junk_fork">叉子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="copper_ore">铜矿石</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="gold_alch">炼金之金</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="grind_oil">武器油</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="grind_oil_2">稀武器油</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="strong_bowstring">优质弓弦</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flask_water">瓶装水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="barrel_honey">蜂蜜桶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flask_empty">空水瓶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="barrel_empty">空水桶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="powder">黑火药</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="coal">煤炭</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="fiber">亚麻纤维</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="iron_plate">铁板</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="weapon_holder">固件</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="wooden_horse">木马</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<p>
+</p>
+</div>         
+<div id="menu3" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="master_hunter_bag">大师驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="snow_hunter_bag">雪地驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rogvold_bag">幽灵驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bird_bag">有翼驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="halt_bag">严寒驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_bag">活火驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ironmaiden_bag">铁处驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="winter_bag">北狼驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="twilight_bag">暮光驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spider_bag">蜘蛛驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plague_bag">瘟疫驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="piligrim_bag">朝圣驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="merchant_bag">游商驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="lute_bag">琵琶驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="east_bag">豪华驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_bag">藏书驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bear_bag">熊驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bag_xmas">圣诞驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="backstab_bag">盟军驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="traveller_bag">旅行驼篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="backpack_violet">玄秘驼篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="backpack_red">行刑驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="backpack_black">黑驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="backpack_15">皮驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="low_reward_bag">GRIM SOUL驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mid_reward_bag">GRIM SOUL旅行驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="high_reward_bag">豪华GRIM SOUL驮篮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu4" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_grim_soul">2周年箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_grim_soul2">3周年箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_grim_soul3">4周年箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_grim_soul5">5周年箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_grim_soul6">6周年箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_grim_soul7">7周宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_emerald">翡翠宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_blood">献祭宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_coffin_hw23">异界宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_lord">贵族宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_challenge">猩红宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_coffin_hw">棺材红箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_dungeon">青铜宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_bone">骨头宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_exquisite">精致宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_mutant">活宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_deadman">死人宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_silver">白银宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_troubled">不安宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_coffin_twilight">华棺材箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_cultist">无名宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_harid">赫拉宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_plague">瘟疫宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_deer">猎人宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_stone">石头箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_egypt">古墓宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_20">商人宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_elegant">优雅宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_coffin">棺材紫箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_frost">冰宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_15">战士宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_10">农家宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chest_xmas_2024">节日宝箱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div> 
+<div id="menu5" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_adult_epic">狼-帝国</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_adult_epic_violet">狼幽灵紫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_adult_epic_Ghost_Black">狼幽灵黑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_adult_epic_xmas">狼-万圣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_green_halloween">独幽灵绿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_yellow_halloween">独幽灵黄</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_black_halloween">独幽灵黑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_violet_halloween">独幽灵紫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_blue_halloween">独幽灵蓝</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_turquoise_halloween">独幽蓝绿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_xmas_cerulean">冰霜蔚蓝</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_xmas_turquoise">冰霜青绿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_xmas_lavender">弗罗薰草</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_converter">独特随机</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_black_unique">独特黑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_white_unique">独特白</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf">装小狼笼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_rare_male">稀有公崽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_rare_female">稀有母崽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_male">恐狼公崽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babywolf_female">恐狼母崽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_adult">恐狼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petwolf_adult1">恐狼1</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pet_food_heart">牛心</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pet_food_alchemy">骨头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pet_food">恐狼零食</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div> 
+<div id="menu15" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cat_food_milk">牛奶碗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cat_food">猫咪零食</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_unique1">独特猫黑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_unique2">独特猫银</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat">小猫笼普</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_rnd">小猫普1</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_rnd1">小猫笼稀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_rare">小猫笼稀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petcat_adult">4成猫普</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="petcat_adult1">4成猫稀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_black_halloween">幽灵黑猫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_blue_halloween">幽灵蓝猫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_turquoise_halloween">幽灵蓝绿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_violet_halloween">幽灵紫绿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_yellow_halloween">幽灵黄猫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_cerulean_xmas">冰霜蔚猫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_turquoise_xmas">冰青绿猫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="babycat_lavender_xmas">薰衣草猫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>    
+<div id="menu6" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pickaxe">石镐</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="hatchet">石斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pickaxe_bronze">青铜丁镐</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="hatchet_bronze">青铜斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pickaxe_artisan">工匠石镐</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="hatchet_artisan">工匠石斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cudgel">棍子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="torch">火把</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="enlightener">照明器</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sickle">镰刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="waggon_thill">车把</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="paddle">桨</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="hoe">锄头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="hammer">铁匠锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mace">尖刺锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="markus_dagger">马库斯剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dagger">匕首</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dagger_poisoned">毒匕首</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pitchfork">长柄叉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shovel">锹</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sword">单手剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pernach">法兰锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="morgenstern">流星锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bastard">变种剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bastard_iron">铁制变剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rupert_sword">鲁伯刀剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="falchion">弯刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scimitar">短弯刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="halberd">戟</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_scimitar">黑短弯刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_halberd">黑戟</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="espadon">长剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="kriegsmesser">战争刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dagger_durable">耐用匕首</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="hammer_durable">耐用锤子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pitchfork_durable">耐长柄叉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mace_durable">耐狼牙棒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bow_simple">猎弓</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bow_composite">复合弓</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="crossbow_simple">猎弩</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="crossbow_light">轻弩</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="crossbow_heavy">重驽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="crossbow_crow">渡鸦弩</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="warpick">战锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="claymore">双刃砍刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="claymore_silver">银刃砍刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_sword">火焰剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="nguest_sickle">夜游镰刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ghost_sword">幽灵剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scythe">恐怖镰刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scythe_fire">仪式镰刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scythe_moon">银月镰刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe">行刑斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="kris">蛇形弯剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="smasher">粉碎者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe_headhunter">掠夺之斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="frost_sword">冰剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bow_bone">骨制弓</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mace_soul">骨制棒子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soul_eater">噬魂师</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mace_cursed">被咒棒子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="stiletto">杀手匕首</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_halberd">火焰戟</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe_frost">冰斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mace_frost">冰锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="skull_crusher">碎颅者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="templar_sword">圣殿骑剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="glaive">长柄刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="thunder_knuckle">雷鸳鸯钺</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_flamberg">金贝儿格</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_flamberg">黑弗尔格</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_poleaxe">黑铜斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spear_grind5">青铜矛+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_poleaxe_grind5">黑铜斧5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sickle_grind5">镰刀+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dagger_grind5">匕首+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="jambia_grind5">也门+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sword_grind5">单手剑+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="khopesh_grind5">镰状剑+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bastard_grind5">变种剑+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ritterschwert_grind5">骑士剑+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="falchion_grind5">弯刀+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="falchion_killer_grind5">杀手刀5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scimitar_grind5">短弯刀5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="halberd_grind5">戟+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="claymore_grind5">双刃+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="espadon_grind5">长剑+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="kriegsmesser_grind5">战争刀5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="katana_grind5">武士刀5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rapier_grind5">轻剑+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sword_crusher_grind5">破刃+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="yataghan_grind5">亚塔+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="katana_black_grind5">黑武刀5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_scimitar_grind5">黑短弯5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_halberd_grind5">黑戟+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="claymore_black_grind5">黑双刃5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="poleaxe_grind5">战斧+5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="claymore_black">黑双刃</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scythe_frost">冰镰</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bow_frost">冰弓</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="glaive_frost">冻结之翼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="halberd_frost">冰戟</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dagger_frost">冰霜匕首</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe_war">战犬之斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shuko">熊掌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="guisarme">行刑之钩</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="trident_poison">尖三叉戟</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pernach_novice">见习修锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="falchion_killer">杀手弯刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe_master">大师斧头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_partisan">火焰阔枪</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_hammer">调查之吻</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_hammer_santa">未出锤子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="temple_torch">神殿火把</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="flaming_bow">灼火焰弓</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe_squealing">尖叫斧头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bone_sword">嗜血</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="khopesh">镰状剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ritterschwert">骑士剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_shuko">黑色熊掌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="morgenstern_novice">流亡锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="jambia">也门弯刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mace_aztec">刃棒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shovel_monk">战斗铲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="wooden_sword">木剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="katana">武士刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mace_fist">诸神之怒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spear_crit">天选之矛</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sword_emperor">帝国之刃</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rapier">轻剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sword_crusher">破刃剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="nagamaki">收割之剑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dawn_blades">萨姆风刃</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="yataghan">亚塔甘刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="kamiz">皇家锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="broom">扫帚</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="watcher_sword">罪恶之刃</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="katana_black">黑武士刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bow_composite_black">黑复合弓</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe_master_black">黑大师斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="glaive_black">黑长柄刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="poleaxe">战斧</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="butcher_cleaver">屠夫肉刀</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="strong_cudgel">坚固棍子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="strong_mace">配重锤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="greatsword_blight">猖獗衰败之刃</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="axe_blight">骨裂者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dagger_blight">仪式匕首</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="straw_hat">草帽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pullen_boots">皮革尖鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bechter_shirt">护心锁甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="horned_hat">角盔</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="doublet_shirt">击剑服</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chaperon_hat">大兜帽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ailette_shirt">护肩锁甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pumpkin_hat">南瓜头盔</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="keeper_hat">仪式面具</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="barbute_hat">巴布塔头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="winter_hat">冬帽</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_wicker">藤编护盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_leather">皮革护盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_light">轻盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_heavy">铁钉盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_black">黑色铁盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_buckler">小圆盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_stun">晕眩</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_poison">被咒护盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_templar">圣殿盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_gladiator">酷吏护盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_frost">冰护盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_emperor">皇帝之盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_compound">复合盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="shield_fire">炽热护盾</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu7" class="menuview">         
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="templar_hat">圣殿头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="templar_shirt">圣殿衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="templar_gloves">圣殿手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="templar_pants">圣殿腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="templar_boots">圣殿鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="gladiator_hat">角斗士头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="gladiator_shirt">角斗士衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="gladiator_gloves">角斗士手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="gladiator_pants">角斗士腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="gladiator_boots">角斗士靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plague_hat">瘟疫头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plague_shirt">瘟疫衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plague_gloves">瘟疫手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plague_pants">瘟疫裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plague_boots">瘟疫靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="winter_hat_blue">北方狼头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="winter_shirt">北方狼甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="winter_gloves">北方狼手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="winter_pants">北方狼裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="winter_boots">北方狼靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ice_hat">冰霜头盔</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ice_shirt">霜粒裙甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ice_gloves">冰冷护手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ice_pants">霜粒腿甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="ice_boots">冰冻靴子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soldier_hat">帝国头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soldier_shirt">帝国甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soldier_gloves">帝国手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soldier_pants">帝国腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soldier_boots">帝国靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="warlock_hat">术士面具</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="warlock_shirt">术士长袍</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="warlock_gloves">术士手套</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="warlock_pants">术士裤子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="warlock_boots">术士靴子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="piligrim_hat">朝圣者头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="piligrim_shirt">朝圣者衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="piligrim_gloves">朝圣者手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="piligrim_pants">朝圣者裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="piligrim_boots">朝圣者靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_hat">圣诞帽子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_shirt">圣诞外套</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_gloves">圣诞手套</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_pants">圣诞裤子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_boots">圣诞靴子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bear_hat">狂战士头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bear_shirt">狂战士衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bear_gloves">狂战士手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bear_pants">狂战士裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bear_boots">狂战士靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dragon_hat">太阳龙头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dragon_shirt">太阳龙衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dragon_gloves">太阳龙手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dragon_pants">太阳龙裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dragon_boots">太阳龙鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="citizen_hat">皇家头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="citizen_shirt">皇家衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="citizen_gloves">皇家手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="citizen_pants">皇家裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="citizen_boots">皇家靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="noker_hat">乌鸦头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="noker_shirt">乌鸦衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="noker_gloves">乌鸦手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="noker_pants">乌鸦腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="noker_boots">乌鸦靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bard_hat">吟游头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bard_shirt">吟游衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bard_gloves">吟游手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bard_pants">吟游裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bard_boots">吟游靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="duelist_hat">决斗者头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="duelist_shirt">决斗者衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="duelist_gloves">决斗者手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="duelist_pants">决斗者腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="duelist_boots">决斗者靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="east_champion_hat">沙漠头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="east_champion_shirt">沙漠衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="east_champion_gloves">沙漠手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="east_champion_pants">沙漠腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="east_champion_boots">沙漠靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="diplomat_hat">外交无头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="diplomat_shirt">外交无衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="diplomat_gloves">外交无手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="diplomat_pants">外交无腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="diplomat_boots">外交无鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_warrior_hat">罪恶头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_warrior_shirt">罪恶衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_warrior_gloves">罪恶手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_warrior_pants">罪恶裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_warrior_boots">罪恶靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_scaly_hat">黑色头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_scaly_shirt">黑色甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_scaly_gloves">黑色手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_scaly_pants">黑色腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_scaly_boots">黑色靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="snow_hunter_hat">雪地头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="snow_hunter_shirt">雪地衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="snow_hunter_gloves">雪地手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="snow_hunter_pants">雪地腿</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="snow_hunter_boots">雪地靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mourning_reaper_hat">哀悼头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mourning_reaper_shirt">哀悼衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mourning_reaper_gloves">哀悼手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mourning_reaper_pants">哀悼裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mourning_reaper_boots">哀悼靴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="executioner_hat">行刑者头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="executioner_shirt">行刑者衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="executioner_pants">行刑者手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="executioner_boots">行刑者裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="executioner_gloves">行刑者鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="aventail_hat">法头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="aventail_shirt">法衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="aventail_gloves">法手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="aventail_pants">法裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="aventail_boots">法鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_hat">黑圣殿头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_gloves">黑圣殿手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_shirt">黑圣殿衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_pants">黑圣殿裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">黑圣殿鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="thunderlord_hat">风暴头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="thunderlord_gloves">风暴手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="thunderlord_shirt">风暴衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="thunderlord_pants">风暴裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="thunderlord_boots">风暴鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scarlet_angel_hat">纯净守护者面具</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scarlet_angel_gloves">纯净守护者手套</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scarlet_angel_shirt">纯净守护者护甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scarlet_angel_pants">纯净守护者腿甲</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scarlet_angel_boots">纯净守护者靴子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">帝机甲头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">帝机甲手</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">帝机甲衣</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">帝机甲裤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">帝机甲鞋</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>  
+<div id="menu8" class="menuview">   
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_altar">2祭坛图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_altar_2">3祭坛图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_altar_3">4祭坛图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_sanctum_1">神庙图2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_sanctum_2">神庙图3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_sanctum_3">神庙图4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_kennel_1">狼棚图2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_kennel_2">狼棚图3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_kennel_3">狼棚图4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_kennel_cat_1">猫窝2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_kennel_cat_2">猫窝3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_kennel_cat_3">猫窝4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_chest_shared">魔法箱图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_chest_shared_1">魔法箱2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_chest_shared_2">魔法箱3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_chest_shared_3">魔法箱4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_workbench_armor">护甲桌图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_armor_1">护甲桌2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_armor_2">护甲桌3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_armor_3">护甲桌4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_workbench_weapon">铁匠桌图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_weapon_1">铁匠桌2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_weapon_2">铁匠桌3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_weapon_3">铁匠桌4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_workbench_mapmaker">制图桌图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_mapmaker_1">制图桌2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_mapmaker_2">制图桌3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_workbench_mapmaker_3">制图桌4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_waggon_1">2大车图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_waggon_2">3大车图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_waggon_3">4大车图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bomb">火药弹图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_workbench_alchemist">炼金桌图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_rack_weapon">武器架图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_rack_armor">护甲架图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_torture_chair">酷刑椅图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_strappado">酷刑架图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_blast_furnace">高炉图纸</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_rogvold_bag">幽灵驮图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_halt_bag">严寒驮图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_piligrim_bag">朝圣驼图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_ironmaiden_bag">铁处女图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_flaming_bag">活火图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_strong_mace">配重锤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_crossbow_heavy">重弩图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_shield_heavy">铁钉盾图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_shield_buckler">小圆盾图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_workbench_grind">磨石图纸</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_kriegsmesser">战争刀图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_morgenstern_novice">流亡锤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_jambia">也门刀图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_mace_aztec">刃棒图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_shovel_monk">战斗铲图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_falchion_killer">杀手刀图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_pernach_novice">见习锤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_khopesh">镰状剑图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_ritterschwert">骑士剑图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_wooden_sword">木剑图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_katana">武士刀图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_rapier">轻剑图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_sword_crusher">破刃剑图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_yataghan">亚塔甘图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_kamiz">皇家锤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_strong_cudgel">坚固棍图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_poleaxe">战斧图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_broom">扫帚图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_spear">青铜矛图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_hatchet_artisan">石斧图纸</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_pickaxe_artisan">石镐图纸</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_chaperon_hat">大兜帽图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_ailette_shirt">护肩锁图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bechter_shirt">护心镜图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_horned_hat">角盔图纸</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_barbute_hat">巴布头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_pullen_boots">皮革鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_straw_hat">草帽图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_doublet_shirt">击剑服图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_plague_hat">瘟疫头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_plague_shirt">瘟疫衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_plague_gloves">瘟疫手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_plague_pants">瘟疫裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_plague_boots">瘟疫鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_warlock_hat">术士头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_warlock_shirt">术士衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_warlock_pants">术士裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_warlock_gloves">术士手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_warlock_boots">术士鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_soldier_hat">帝国头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_soldier_shirt">帝国衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_soldier_gloves">帝国手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_soldier_pants">帝国腿图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_soldier_boots">帝国鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bear_hat">狂战头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bear_shirt">狂战衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bear_gloves">狂战手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bear_pants">狂战裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bear_boots">狂战鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_dragon_hat">太阳头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_dragon_shirt">太阳衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_dragon_pants">太阳裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_dragon_boots">太阳鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_dragon_gloves">太阳手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_noker_hat">乌鸦头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_noker_shirt">乌鸦衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_noker_gloves">乌鸦手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_noker_pants">乌鸦腿图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_noker_boots">乌鸦鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_citizen_hat">皇家头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_citizen_shirt">皇家衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_citizen_gloves">皇家手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_citizen_pants">皇家裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_citizen_boots">皇家鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bard_hat">吟游头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bard_shirt">吟游衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bard_gloves">吟游衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bard_pants">吟游裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_bard_boots">吟游鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_duelist_hat">决斗头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_duelist_shirt">决斗衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_duelist_pants">决斗腿图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_duelist_boots">决斗鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_duelist_gloves">决斗手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_east_champion_hat">沙漠头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_east_champion_shirt">沙漠衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_east_champion_pants">沙漠腿图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_east_champion_boots">沙漠鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_east_champion_gloves">沙漠手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_hat">外交头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_shirt">外交衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_gloves">外交腿图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_pants">外交鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_boots">外交手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_black_warrior_hat">罪恶头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_black_warrior_shirt">罪恶衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_black_warrior_pants">罪恶裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_black_warrior_boots">罪恶鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_black_warrior_gloves">罪恶手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_piligrim_hat">朝圣头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_piligrim_shirt">朝圣衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_piligrim_gloves">朝圣裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_piligrim_pants">朝圣鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_piligrim_boots">朝圣手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_snow_hunter_hat">雪地头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_snow_hunter_shirt">雪地衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_snow_hunter_gloves">雪地手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_snow_hunter_pants">雪地腿图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_snow_hunter_boots">雪地鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_mourning_reaper_hat">哀悼头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_mourning_reaper_shirt">哀悼衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_mourning_reaper_gloves">哀悼手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_mourning_reaper_pants">哀悼裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_mourning_reaper_boots">哀悼鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_executioner_hat">行刑头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_executioner_shirt">行刑衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_executioner_pants">行刑裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_executioner_boots">行刑鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_executioner_gloves">行刑手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_aventail_hat">法头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_aventail_shirt">法衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_aventail_pants">法裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_aventail_gloves">法手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_aventail_boots">法鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_thunderlord_hat">风暴头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_thunderlord_gloves">风暴手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_thunderlord_shirt">风暴衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_thunderlord_pants">风暴裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_thunderlord_boots">风暴鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_night_stalker_hat">夜猎头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_night_stalker_gloves">夜猎手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_night_stalker_shirt">夜猎衣图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_night_stalker_pants">夜猎裤图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_night_stalker_boots">夜猎鞋图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_hat">帝国机甲头图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_gloves">帝国机甲手图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_shirt">帝国机甲甲图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_pants">帝国机甲腿图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="research_for_diplomat_boots">帝国机甲靴图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>       
+<div id="menu9" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="yuck">难吃东西</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="berry">山楂</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="leek_seeds">韭葱种</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mandrake_seeds">曼德拉种</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pumpkin_seeds">南瓜子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rice_seeds">水稻种</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="oat_seeds">燕麦种</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="oat">燕麦</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rice">大米</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mushroom_poison">墓地蘑菇</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mandrake">曼德拉根</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mushroom">吉普蘑菇</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sweet_pie">甜饼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soured_milk">酸牛奶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="turkey">火鸡</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pumpkin">南瓜</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="turkey_roast">烤火鸡</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rice_cake">大米玛芬</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="berry_drink">浆果饮料</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="meat_raw">生肉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="meat_roast">烤肉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="meat_jerky">牛肉干</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="leek">韭葱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="leek_roasted">烤韭葱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="porridge_poison">浆果粥</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pottage_mushroom">蘑菇汤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mushroom_amanita">鹅膏菌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="meat_stew">卢比炖肉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="turkey_with_leek">火鸡蔬菜</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="leek_rings">洋葱圈</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="berry_tea">浆果茶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="seeds_roast">炒瓜子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="soul_cake">节日蛋糕</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="candy_apple">苹果包糖</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="baked_pumpkin">烤南瓜</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_cookie">姜饼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_candy">焦糖棒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_pudding">梅子布丁</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="sugar_skull">糖骷髅头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="berry_poison">冬青果</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pottage">韭葱汤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="pottage_north">北方汤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="consomme_with_leek">洋葱清汤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu10" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="fabric">绷带</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_mushroom">蘑菇浸剂</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="wine">香料酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="beer">麦芽酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mead">蜂蜜酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tincture">苦药酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="mandrake_tincture">曼德拉酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="monk_tincture">僧侣药酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_mushroom_sweet">甜蘑菇酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_revive">圣彼药酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_cloak">潜行药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_night_vision">夜视药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_energy">活力药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="protective_ointment">防御药膏</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="protective_ointment_2">坚持药膏</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_focus">专注药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_luck">幸运药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_fearlessness">勇气药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="potion_stone_form">石化药剂</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="grenade_poison">投掷药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="grenade_freeze">冷冻药水</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="grenade_pumpkin">南瓜炸弹</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu11" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_fists_damage_2">拳头2</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_cudgel_damage_3">棍子3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_hoe_damage_3">锄头3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_torch_damage_3">火把3</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_waggon_thill_damage_4">车把4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_sickle_damage_4">镰刀4</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_dagger_damage_5">匕首5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_shovel_damage_5">锹5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_hammer_damage_5">铁匠锤5</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_paddle_damage_6">桨6</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_pitchfork_damage_6">长柄叉6</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_sword_damage_6">单手剑6</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_mace_damage_7">尖刺锤7</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_morgenstern_damage_8">流星8</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_poleaxe_damage_8">战斧8</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_pernach_damage_8">法兰8</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_falchion_damage_9">弯刀9</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_bastard_damage_15">变种15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_scimitar_damage_15">短弯15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_kriegsmesser_damage_15">战刀15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_claymore_damage_15">双刃15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_espadon_damage_15">长剑15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_halberd_damage_15">戟15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_shields_durability_15">护盾15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_second_arrow_attack_15">弓弩15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_spear_damage_15">矛15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_fabric_heal_10">绷带</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_beer_heal_10">麦芽酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_berry_drink_heal_10">浆果饮料</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_meat_jerky_heal_10">牛肉干</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_meat_roast_heal_10">烤肉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_pottage_heal_10">韭菜汤</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_barrel_honey_heal_10">蜂蜜桶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_leek_roasted_heal_10">烤韭葱</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_potion_mushroom_heal_6">蘑菇浸剂</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_wine_heal_6">苦药酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_tincture_heal_6">香料酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_mandrake_tincture_heal_6">曼德拉酒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_leper_evade_10">麻风病人</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_wolf_evade_10">狼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_bear_evade_10">熊</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_cursed_evade_10">被咒者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_direwolf_evade_10">恐狼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_knight_evade_10">被咒骑士</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_templar_evade_10">被圣骑士</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_archer_evade_10">黑暗猎人</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_rogue_evade_10">瘟疫强盗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_cursed_dung1_evade_10">被附身者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_knight_dung1_evade_10">被弃者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_templar_dung1_evade_10">亵渎者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_victim_dung_evade_10">痛苦者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_hangman_dung_evade_10">屠宰者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_axe_thrower_dung_evade_10">投斧者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_shaman_dung_evade_10">女祭司</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_torturer_dung_evade_10">酷吏</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_axe_thrower_headhunter_dung_evade_10">猎头者
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_hangman_punisher_dung_evade_10">惩罚者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_cruel_torturer_dung_evade_10">残忍酷吏</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_fire_spawn_dung_evade_10">火焰守卫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_cursed_martyr_evade_10">瘟疫缠身</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_knight_warrior_evade_10">被咒勇士</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_templar_zealot_evade_10">被咒狂徒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_wagenburg_lieutenant_evade_10">大车中尉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_castle_ghost_evade_10">哀悼影子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_scholar_ghost_evade_10">科学家幽灵</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_scribe_ghost_evade_10">抄写员幽灵</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_bat_evade_10">恐怖蝙蝠</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_halt_shard_evade_10">哈特碎片</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_harid_priest_evade_10">哈立德祭司</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_wagenburg_soldiers_evade_10">大车炮台士兵
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_skull_dung_evade_10">骷髅书</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_rogue_stun_evade_10">瘟疫野蛮</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_leper_soldier_evade_10">麻风战士</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_leper_poison_evade_10">瘟疫之卵</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_wood_gather_10">原松木</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_stone_gather_10">石灰岩</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_fiber_gather_10">亚麻纤维</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_copper_ore_gather_10">铜矿石</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_berry_gather_10">浆果</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_iron_ore_gather_10">铁矿石</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_birch_wood_gather_10">原桦木</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_player_speed_10">奔跑速度</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_player_health_15">强力生命</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_player_thirst_10">饮料强化</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_player_hunger_10">食物强化</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_torch_durability_10">护火者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_map_walk_10">探路人</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_hp_restore_10">治疗休息</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_player_armor_10">群防</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_player_poison_10">铁胃</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_poison_resist_15">免疫</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_stun_resist_10">势不可挡</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_resurrection_10">重生</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_adrenalin_5">超级专注</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_energy_boost_15">精力充沛</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_trap_damage_10">设陷阱者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_trained_wolves_15">15训狼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_trap_speed_15">15猎人</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_fire_resist_15">15防火</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_freeze_resist_15">15防霜</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_bleed_resist_15">15凝血</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_crossbow_reload_speed_10">10快载</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_battle_rage_5">战斗狂怒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_speed_boost_10">疾跑</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_armor_boost_15">防御姿态</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_look_around_10">渡鸦之眼</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_damage_around_15">循环效应</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_scare_ng_10">黑暗驱逐</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_super_hit_15">重击</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_damage_reflection_15">惩罚</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_super_hit_stun_15">眩晕一击</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_become_stone_15">石化</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_restraint_15">抑制</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_curse_15">诅咒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_wolf_bite_15">15司令</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_trained_cats_15">训练猫15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_rune_speed_15">符操控15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_skilled_summoner_15">召唤师15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_block_master_15">格挡师15</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_fearlessness_10">无畏10</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_wolf_bite_15">15司令</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="book_freeze_around_15">15冰环</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</button></button></div>
+<div id="menu12" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_fear">恐怖卷轴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_control">1级控制</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_control2">2级控制</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_control3">3级控制</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_rain">大量卷轴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_expel">流亡公告</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_freeze">冻结卷轴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_clan">骑团法令</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_summon">召唤卷轴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_lightning">神圣卷轴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_massacre">屠杀卷轴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_look_around_2">2渡鸦卷</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_look_around_3">3渡鸦卷</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_summon_1">1级不死卷</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_summon_2">2级不死卷</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_summon_3">3级不死卷</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="spell_summon_4">4级不死卷</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu13" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="storage_book">书架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="storage_fuel">木架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="storage_weapon">武器架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="storage_armor">护甲架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="storage_food">食品架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="workbench_armor">护甲师桌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="workbench_weapon">铁匠桌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="workbench_mapmaker">制图师桌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="storage_alchemy">草药架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="dinner_table">雕刻桌子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bed">哥特床</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="fireplace">壁炉</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_tree">圣诞树</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="scarecrow">稻草人</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rack_armor_elite">豪华护架</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rack_weapon_elite">征服王座</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="throne_frozen">冰封王座</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu14" class="menuview"> 
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass3_stamp_small">3小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass3_stamp_middle">3中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass3_stamp_large">3大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass4_stamp_small">4小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass4_stamp_middle">4中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass4_stamp_large">4大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass5_stamp_small">5小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass5_stamp_middle">5中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass5_stamp_large">5大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass6_stamp_small">6小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass6_stamp_middle">6中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass6_stamp_large">6大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass7_stamp_tiny">7极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass7_stamp_small">7小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass7_stamp_middle">7中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass7_stamp_large">7大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass8_stamp_tiny">8极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass8_stamp_small">8小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass8_stamp_middle">8中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass8_stamp_large">8大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass9_stamp_tiny">9极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass9_stamp_small">9小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass9_stamp_middle">9中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass9_stamp_large">9大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass10_stamp_tiny">10极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass10_stamp_small">10小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass10_stamp_middle">10中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass10_stamp_large">10大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass11_stamp_tiny">11极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass11_stamp_small">11小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass11_stamp_middle">11中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass11_stamp_large">11大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass12_stamp_tiny">12极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass12_stamp_small">12小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass12_stamp_middle">12中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass12_stamp_large">12大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass13_stamp_tiny">13极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass13_stamp_small">13小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass13_stamp_middle">13中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass13_stamp_large">13大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass14_stamp_tiny">14极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass14_stamp_small">14小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass14_stamp_middle">14中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass14_stamp_large">14大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass15_stamp_tiny">15极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass15_stamp_small">15小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass15_stamp_middle">15中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass15_stamp_large">15大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_stamp_tiny">16极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_stamp_small">16小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_stamp_middle">16中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_stamp_large">16大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass17_stamp_tiny">17极章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass17_stamp_small">17小章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass17_stamp_middle">17中章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass17_stamp_large">17大章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass7_banner_infantryman">7随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass7_banner_paladin">7圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass8_banner_infantryman">8随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass8_banner_paladin">8圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass9_banner_infantryman">9随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass9_banner_paladin">9圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass10_banner_infantryman">10随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass10_banner_paladin">10圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass11_banner_infantryman">11随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass11_banner_paladin">11圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass12_banner_infantryman">12随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass12_banner_paladin">12圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass13_banner_infantryman">13随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass13_banner_paladin">13圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass14_banner_infantryman">14随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass14_banner_paladin">14圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass15_banner_infantryman">15随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass15_banner_paladin">15圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_banner_infantryman">16随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_banner_paladin">16圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_banner_infantryman">17随旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="battlepass16_banner_paladin">17圣旗</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu16" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan">行省地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan_a">被弃地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan_b">酷吏地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan_boss_01">看守地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan_temple">神祠地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan_anniversary">墓穴地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan_normal">双骷地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="plan_hard">三骷地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_hunting_grounds">狩猎地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_converter">暗祭地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_convoy">商人地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_cemetery">墓夜地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_death_labyrinth">野蛮地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_warlock_lair">死穴地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_small_hermit_storage">被窖地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_big_hermit_storage">大弃窖图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_unknown">未事件图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_trader">游商地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tube_normal">地图盒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tube_rare">稀地图盒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tube_unique">独地图盒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tube_legendary">传地图盒</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_deadman">堕骑地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_td.chest.location">被咒者图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_waggon">破车地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_anniversary_ground">荒穴地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_burned_village">死村地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_sacrificial_altar">献祭地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_pasture">牧场地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_tiny_hermit_storage">小被弃图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_unknown_piece">未地图碎</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_unknown_rare_piece">稀未图碎</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_unknown_unique_piece">独特图碎</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_small_hermit_storage_piece">被弃地碎</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_big_hermit_storage_piece">大被窖碎</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_sacrificial_altar_piece">献祭图碎</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_tiny_hermit_storage_piece">小被窖碎</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_hermit_hut">被隐地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="event_map_virbjorn_lair">维恩地图</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+<div id="menu17" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="priestess_ashes">修博灰烬</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="filth">衰败样本</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="raven_feather">渡鸦羽毛</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="turkey_feather">火鸡羽毛</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="aissa_drop">艾莎眼泪</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rupert_drop">鲁伯特泪</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="moonflower">月之花</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cinnabar">朱砂</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_amulet">冬季身符</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cobalt">钴</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="token_angel">红使徽章</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_wreath">圣诞花环</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_socks">节日袜</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_toy">圣诞饰品</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_lantern">圣诞提灯</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_gift_small">小型礼物</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_gift_medium">中等礼物</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="xmas_gift_big">大型礼物</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>  
+<div id="menu18" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_task107">大车钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_eisenhorn_chest">艾森博匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_castle_chest">险恶钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_enemy_chest">宝箱钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_task407_2_5">房门钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_puzzle">骨头钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_watchtower">警戒钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_td">宝箱钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_dungeon_01">被弃钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_dungeon_02">酷吏钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_forgotten_cemetery_chest">召唤钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_ancient_sepulchre">幽灵钥匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_claus_trade_small">小圣诞匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_claus_trade_medium">中圣诞匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="key_claus_trade_large">大圣诞匙</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>  
+<div id="menu19" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_01">花卉客人</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_02">善良的心</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_03">蜘蛛</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_04">微笑者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_05">侦察员</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_06">萨满</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_07">酋长</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_08">外来者</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_09">瘟疫猎犬</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_10">森林之子</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_11">野蛮人</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="tattoo_12">得到净化</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>  
+<div id="menu20" class="menuview">
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="whale_book">100级书</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="token_harat">赫拉令牌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="token_plague">瘟疫令牌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="token_nameless">无名令牌</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="chef_recipes_book">露营之书</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="powder_charge">炸药</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="powder_barrel">炸药桶</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="bomb">火药炸弹</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="relic_fragment">骑士文物</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="eisenhorn_head">艾森博头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="harid_head">哈利头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="aissa_head">艾莎的头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="halt_head">哈特之头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="rogvold_head">罗格沃头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="cursed_lady_head">芙拉格纳的头</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="runetrap_fire">火焰符文</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="runetrap_freeze">冰符文</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+<button class="button" style="width:20%;    padding: 6px;" onclick="th(this)" value="" id="black_templar_boots">待添加</button>
+</div>
+  </div>
+   </div>
+      
+    <script src="static/js/jquery.min.js"></script>
+     <script>
+        const colorToggleImage = document.getElementById('colorToggle');
+        const contentContainer = document.querySelector('.content-container');
+        const bodyView = document.querySelector('#bodyView');
+        let isDarkMode = false;
+        function handleColorToggle() {
+            isDarkMode = !isDarkMode;
+            const newColor = isDarkMode ? '#000000' : '#fcfcfc';
+         
+            contentContainer.style.backgroundColor = newColor;
+            bodyView.style.backgroundColor = newColor;
+
+          
+            colorToggleImage.classList.toggle('active', isDarkMode);
+        }
+        function Toast(msg,duration){
+duration=isNaN(duration)?1000:duration;
+var m = document.createElement('div');
+m.innerHTML = msg;
+m.style.cssText="font-size:.96rem;color:#ffffff;background-color:#555555;border-radius:5px;position:absolute;top:2%;width:99.5%;text-align:center;";
+document.body.appendChild(m);
+setTimeout(function() {
+var d = 0.5;
+m.style.opacity = '0';
+setTimeout(function() { document.body.removeChild(m) }, d * 1000);
+}, duration);
+}
+function set(address, offset, mbz, flags) {
+var Add = address + offset;
+h5gg.setValue(Add, mbz, flags);
+}
+
+setButtonImage('http://114.132.83.8:80/lklh.jpg');
+        colorToggleImage.addEventListener('click', handleColorToggle);
+    </script>
+    
+
+    
+  <script>  
+// 切换下拉菜单的显示状态
+function toggleDropdown() {   
+    var dropdownContent = document.getElementById("dropdown");
+    if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
+        dropdownContent.style.display = "block";
+    } else {
+        dropdownContent.style.display = "none";
+    }
+}
+
+// 设置下拉菜单切换按钮的点击事件
+document.getElementById("toggleButton").addEventListener("click", toggleDropdown);
+
+// 禁用文本选择和拖动
+document.body.onselectstart = document.body.ondrag = function () {
+    return false;
+};
+
+// 文档加载完成后初始化设置
+$(document).ready(function() {
+    // 输入框失去焦点时滚动到页面顶部
+    $("input").blur(function() {
+        window.scroll(0, 0);
+    });
+
+    // 处理触摸事件
+    document.body.addEventListener('touchstart', function() {});
+
+    // 如果 h5gg 对象存在，设置可拖动窗口
+    if (typeof h5gg != 'undefined') {
+        var w = 393;
+        var h = 318;
+
+        // 设置窗口拖动范围
+        setWindowDrag(30, 30, w, 30);
+
+        // 布局调整函数
+        var layout = function() {
+            // 处理屏幕方向变化
+            if (window.lastorientation == window.orientation) return;
+            window.lastorientation = window.orientation;
+
+            // 根据屏幕方向调整窗口位置和大小
+            if (Math.abs(window.orientation) == 90) {
+                var x = (window.screen.height - w) / 2;
+                var y = (window.screen.width - h) / 2;
+                setWindowRect(x, y, w, h);
+            } else {
+                var x = (window.screen.width - w) / 2;
+                var y = (window.screen.height - h) / 2;
+                setWindowRect(x, y, w, h);
+            }
+        };
+
+        // 初始化布局
+        layout();
+        // 监听屏幕方向变化事件
+        window.addEventListener("orientationchange", layout, false);
+    }
+
+var h5gg_internel_version = "1.0.0"; // 你想要设置的版本信息
+
+    // 菜单框点击事件
+    var menuboxes = document.querySelectorAll('div.menubox');
+    menuboxes.forEach(function (menubox) {
+        menubox.addEventListener('click', function () {
+            menuboxes.forEach(function (box) {
+                box.classList.remove('current');
+            });
+            document.querySelectorAll('div.menuview').forEach(function (view) {
+                view.classList.remove('current');
+            });
+            this.classList.add('current');
+
+            var menuid = this.getAttribute('menu');
+            document.getElementById(menuid).classList.add('current');
+        });
+    });
+
+    // 更新视图高度
+    document.getElementById('bodyView').style.height = document.body.offsetHeight - document.getElementById('titleBar').offsetHeight + 'px';
+});
+
+
+// 根据名称获取值
+function getValueByName(name) {
+    var elements = document.getElementsByName(name);
+    if (elements.length === 0) {
+        alert("获取控件数据失败, 找不到名称为" + name + "的控件");
+        return "";
+    } else if (elements.length === 1) {
+        return elements[0].value;
+    } else {
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].type != 'radio') {
+                alert("获取控件数据失败, 存在多个名称为" + name + "的控件");
+                return "";
+            }
+        }
+        var element = Array.from(elements).find(el => el.checked);
+        return element ? element.value : "";
+    }
+}
+
+
+    </script>
+<script>//初始化搜索
+    var sou1 = 759315117;//代码精确搜索
+    var sou2 = 4049;//代码联合搜索
+    /********************/
+    
+    
+    
+    
+    
+    var K0 = 0;//空瓶地址
+    var wpzz = 0;
+    var wpsl = 3000;
+    function Ksp(input){//空水瓶初始搜索
+        h5gg.clearResults();
+        h5gg.searchNumber(sou1, 'I32', '0x100000000', '0x160000000');
+        h5gg.searchNearby(sou2, 'I32', '0x8');
+        h5gg.searchNumber(sou2, 'I32', '0x100000000', '0x160000000');
+        var jieGuo = h5gg.getResultsCount();
+        if(jieGuo == 0 || jieGuo > 20){alert('搜索失败，重上游戏重试');return;}
+    
+        var qizhi = 0;
+        for(var k = 0 ; k < jieGuo; k++){
+            var pian  = Number(h5gg.getResults('1',k)[0].address) - 8;
+            wpzz = pian - 16;
+            for(var i = 1 ; i < 500; i++){
+            if(qizhi){qizhi = 0;break;}
+                var addr = getI64(pian + 24*i);
+                    
+                if(addr < 0x100000000 || addr > 0x160000000){alert('读取失败');return;}
+                
+                let addr1 = getI32(addr + 16);
+                if(addr1 == 11){
+                    <!-- var kpz = [11,7077990,7536737,6226027,7143525,7602288,121]; -->
+                    var kpz = [11,7077990,7536737,6226027,6357111,6619252,114];
+                    for(var j = 1; j <=6; j++){
+                        let num = getI32(addr+16 + 4*j);
+                        if(num != kpz[j]){break;}
+                        if(j == 6 ){
+                            let	kpaddr = pian+8 + 24*i;
+                            let pduan = getI64(kpaddr) +40;
+                                pduan = getI64(pduan);
+                                
+                            if(pduan == 20){
+                                kpaddr = getI64(kpaddr) +48;
+                                kpaddr = getI64(kpaddr) +48;
+                                kpaddr = getI64(kpaddr) +16;
+                                kpaddr = getI64(kpaddr) +16;
+                                kpaddr = getI64(kpaddr) +64;
+                                K0 = getI64(kpaddr) +48;
+                                alert('空瓶搜索成功，可以替换');
+                                return;
+                            }else{qizhi = 1;break;}
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function th(input){
+        if(!K0){Toast('请先初始化',300);return;}
+        if(!input.value){alert('代码无效或空代码');return;}
+        set1(input.value);
+        Toast(input.innerText,300);
+    }
+    function set1(hang){
+        hang = Number(hang);
+        let xiugz = getI64(wpzz+16 + hang*24);
+        h5gg.setValue(K0, xiugz, 'I64');
+    }
+    function gengxinwupin(){
+        if(!K0){alert('空瓶先初始化');return;}
+        for(let i = 1; i <= wpsl; i++){
+    
+            let addr = getI64(wpzz+16 + 24*i);
+            if(addr == 0 ){Toast('初始化完毕');return;}
+            let name = getname(addr);
+            if(!document.getElementById(name)){continue;}
+            document.getElementById(name).value = i;
+        }
+        Toast('初始化完毕');
+    }
+    function getname(addr){
+        if(!addr || (/[\.]/).test(addr)){Toast('地址无效',300);return;}
+        
+            let duqu2 = getI32(addr + 16);
+                if(duqu2 < 1 || duqu2 > 200){Toast('数值无效');return;}
+                if(duqu2&1){duqu2++;}
+                duqu2 = duqu2 / 2 + 1;
+                
+            let csz = [];
+            for(let i = 1;i < duqu2; i++){
+                let getnum = getI32(addr+16 + i*4);
+                    if(!getnum){break;}
+                    if(getnum > 65535)
+                    {
+                        let v1 = getnum%65536;
+                        csz.push(String.fromCodePoint(v1));
+                        csz.push(String.fromCodePoint((getnum - v1) / 65536));
+                    }
+                    else if(getnum < 65535 && getnum > 0)
+                    {
+                        csz.push(String.fromCodePoint(getnum));
+                    }
+            }
+    return csz.join("");
+    }
+    function getI64(addr){
+        addr = Number(h5gg.getValue(addr,'I64'));
+        return addr;
+    }
+    function getI32(addr){
+        addr = Number(h5gg.getValue(addr,'I32'));
+        return addr;
+    }
+    </script>
+</body>
+</head></html>
